@@ -40,15 +40,16 @@ function Form() {
     instructions: ""
   });
 
+  
   const [user, setUser] = useState([]);
 
-  const [button, setButton] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const [response, setResponse] = useState();
 
   useEffect(() => {
     formSchema.isValid(formState).then(valid => {
-      setButton(!valid);
+      setButtonDisabled(!valid);
     });
   }, [formState]);
 
@@ -76,7 +77,7 @@ function Form() {
       .post("https://reqres.in/api/orders", formState)
       .then(res => {
         setUser(existing => [...existing, res.data]);
-        console.log('success', response)
+        console.log("success", response);
 
         setFormState({
           name: "",
@@ -90,21 +91,22 @@ function Form() {
         });
       })
       .catch(err =>
-        console.log("Something is wrong with your form", err.response)
+        console.log(err.response)
       );
   };
 
   const inputChange = e => {
-      e.persist();
-      const targetName = e.targetName
-      const targetValue = e.target.type === "checkbox" ? e.target.checked : e.target.value
-      const newFormData ={
-          ...formState,
-          [targetName]: targetValue
-      };
-      validateChange(targetName, targetValue);
-      setFormState(newFormData);
-  }
+    e.persist();
+    const targetName = e.target.name;
+    const targetValue =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    const newFormData = {
+      ...formState,
+      [targetName]: targetValue
+    };
+    validateChange(targetName, targetValue);
+    setFormState(newFormData);
+  };
 
   return (
     <div>
@@ -121,7 +123,8 @@ function Form() {
           {errors.name.length > 0 ? (
             <p className="error">{errors.name}</p>
           ) : null}
-        </label> <br/>
+        </label>{" "}
+        <br />
         <label htmlFor="size">
           Choose your pizza size!
           <select id="size" name="size" onChange={inputChange}>
@@ -129,7 +132,8 @@ function Form() {
             <option value="medium">Medium</option>
             <option value="large">Large</option>
           </select>
-        </label> <br/>
+        </label>{" "}
+        <br />
         <label htmlFor="sauce">
           Choose your pizza sauce!
           <select id="sauce" name="sauce" onChange={inputChange}>
@@ -138,10 +142,11 @@ function Form() {
             <option value="bbq sauce">BBQ Sauce</option>
             <option value="spinach alfredo">Spinach Alfredo</option>
           </select>
-        </label> <br/>
+        </label>{" "}
+        <br />
         <label htmlFor="cheese">
-            Cheese
-            <input
+          Cheese
+          <input
             id="cheese"
             type="checkbox"
             name="cheese"
@@ -151,10 +156,11 @@ function Form() {
           {errors.cheese.length > 0 ? (
             <p className="error">{errors.cheese}</p>
           ) : null}
-        </label> <br/>
+        </label>{" "}
+        <br />
         <label htmlFor="meat">
-        Meat
-            <input
+          Meat
+          <input
             id="meat"
             type="checkbox"
             name="meat"
@@ -164,10 +170,11 @@ function Form() {
           {errors.meat.length > 0 ? (
             <p className="error">{errors.meat}</p>
           ) : null}
-        </label> <br/>
+        </label>{" "}
+        <br />
         <label htmlFor="veggies">
-        Veggies
-            <input
+          Veggies
+          <input
             id="veggies"
             type="checkbox"
             name="veggies"
@@ -177,10 +184,11 @@ function Form() {
           {errors.veggies.length > 0 ? (
             <p className="error">{errors.veggies}</p>
           ) : null}
-        </label> <br/>
+        </label>{" "}
+        <br />
         <label htmlFor="other">
-        Other
-            <input
+          Other
+          <input
             id="other"
             type="checkbox"
             name="other"
@@ -190,9 +198,10 @@ function Form() {
           {errors.other.length > 0 ? (
             <p className="error">{errors.other}</p>
           ) : null}
-        </label> <br/>
+        </label>{" "}
+        <br />
         <label htmlFor="instructions">
-        Special Instructions
+          Special Instructions
           <input
             id="instructions"
             type="text"
@@ -203,11 +212,15 @@ function Form() {
           {errors.instructions.length > 0 ? (
             <p className="error">{errors.instructions}</p>
           ) : null}
-        </label> <br/> 
-        <button disabled={button}>Submit</button>
+        </label>{" "}
+        <br />
+        <button disabled={buttonDisabled}>Submit</button>
       </form>
-      {user.map(user =>
-        <p>{user.name} {user.instructions}</p>)}
+      {user.map(user => (
+        <p>
+          {user.name} {user.size} {user.sauce} {user.instructions}
+        </p>
+      ))}
     </div>
   );
 }
