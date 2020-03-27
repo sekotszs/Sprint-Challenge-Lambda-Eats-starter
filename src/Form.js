@@ -18,15 +18,14 @@ const formSchema = yup.object().shape({
 });
 
 function Form() {
- 
   const [formState, setFormState] = useState({
     name: "",
     size: "",
     sauce: "",
-    cheese: true||false,
-    meat: true||false,
-    veggies: true||false,
-    other: true||false,
+    cheese: true || false,
+    meat: true || false,
+    veggies: true || false,
+    other: true || false,
     instructions: ""
   });
 
@@ -41,9 +40,11 @@ function Form() {
     instructions: ""
   });
 
+  const [user, setUser] = useState([]);
+
   const [button, setButton] = useState(true);
 
-  const [response, setResponse] = useState([]);
+  const [response, setResponse] = useState();
 
   useEffect(() => {
     formSchema.isValid(formState).then(valid => {
@@ -51,44 +52,59 @@ function Form() {
     });
   }, [formState]);
 
-  const validateChange = (targetName,targetValue) => {
-      yup.reach(formSchema, targetName).validate(targetValue).then(valid =>
-        {setErrors({
-            ...errors,
-            [targetName]:''
-        })
-    })
-    .catch(err => {
+  const validateChange = (targetName, targetValue) => {
+    yup
+      .reach(formSchema, targetName)
+      .validate(targetValue)
+      .then(valid => {
         setErrors({
-            ...errors,
-            [targetName]: err.errors
-        })
-    })
-  }
+          ...errors,
+          [targetName]: ""
+        });
+      })
+      .catch(err => {
+        setErrors({
+          ...errors,
+          [targetName]: err.errors
+        });
+      });
+  };
 
   const formSubmit = e => {
     e.preventDefault();
     axios
       .post("https://reqres.in/api/orders", formState)
       .then(res => {
-        setPost(res.data);
+        setUser(existing => [...existing, res.data]);
+        console.log('success', response)
 
         setFormState({
           name: "",
           size: "",
           sauce: "",
-          cheese: "",
-          meat: "",
-          veggies: "",
-          other: "",
+          cheese: false,
+          meat: false,
+          veggies: false,
+          other: false,
           instructions: ""
         });
       })
       .catch(err =>
         console.log("Something is wrong with your form", err.response)
       );
-      
   };
+
+  const inputChange = e => {
+      e.persist();
+      const targetName = e.targetName
+      const targetValue = e.target.type === "checkbox" ? e.target.checked : e.target.value
+      const newFormData ={
+          ...formState,
+          [targetName]: targetValue
+      };
+      validateChange(targetName, targetValue);
+      setFormState(newFormData);
+  }
 
   return (
     <div>
@@ -105,32 +121,93 @@ function Form() {
           {errors.name.length > 0 ? (
             <p className="error">{errors.name}</p>
           ) : null}
-        </label>
+        </label> <br/>
         <label htmlFor="size">
-            Choose your pizza size!
-            <select
-            id="size"
-            name="size"
-            onChange={inputChange}>
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
-            </select>
-        </label>
+          Choose your pizza size!
+          <select id="size" name="size" onChange={inputChange}>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </label> <br/>
         <label htmlFor="sauce">
-            Choose your pizza sauce!
-            <select
-            id="sauce"
-            name="sauce"
-            onChange={inputChange}>
-                <option value="original red">Original Red</option>
-                <option value ="garlic ranch">Garlic Ranch</option>
-                <option value="bbq sauce">BBQ Sauce</option>
-                <option value="spinach alfredo">Spinach Alfredo</option>
-
-            </select>
-        </label>
+          Choose your pizza sauce!
+          <select id="sauce" name="sauce" onChange={inputChange}>
+            <option value="original red">Original Red</option>
+            <option value="garlic ranch">Garlic Ranch</option>
+            <option value="bbq sauce">BBQ Sauce</option>
+            <option value="spinach alfredo">Spinach Alfredo</option>
+          </select>
+        </label> <br/>
+        <label htmlFor="cheese">
+            Cheese
+            <input
+            id="cheese"
+            type="checkbox"
+            name="cheese"
+            value={formState.cheese}
+            onChange={inputChange}
+          />
+          {errors.cheese.length > 0 ? (
+            <p className="error">{errors.cheese}</p>
+          ) : null}
+        </label> <br/>
+        <label htmlFor="meat">
+        Meat
+            <input
+            id="meat"
+            type="checkbox"
+            name="meat"
+            value={formState.meat}
+            onChange={inputChange}
+          />
+          {errors.meat.length > 0 ? (
+            <p className="error">{errors.meat}</p>
+          ) : null}
+        </label> <br/>
+        <label htmlFor="veggies">
+        Veggies
+            <input
+            id="veggies"
+            type="checkbox"
+            name="veggies"
+            value={formState.veggies}
+            onChange={inputChange}
+          />
+          {errors.veggies.length > 0 ? (
+            <p className="error">{errors.veggies}</p>
+          ) : null}
+        </label> <br/>
+        <label htmlFor="other">
+        Other
+            <input
+            id="other"
+            type="checkbox"
+            name="other"
+            value={formState.other}
+            onChange={inputChange}
+          />
+          {errors.other.length > 0 ? (
+            <p className="error">{errors.other}</p>
+          ) : null}
+        </label> <br/>
+        <label htmlFor="instructions">
+        Special Instructions
+          <input
+            id="instructions"
+            type="text"
+            name="instructions"
+            value={formState.instructions}
+            onChange={inputChange}
+          />
+          {errors.instructions.length > 0 ? (
+            <p className="error">{errors.instructions}</p>
+          ) : null}
+        </label> <br/> 
+        <button disabled={button}>Submit</button>
       </form>
+      {user.map(user =>
+        <p>{user.name} {user.instructions}</p>)}
     </div>
   );
 }

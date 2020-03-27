@@ -6,6 +6,7 @@ const App = () => {
     <>
       <h1>Lambda Eats</h1>
       <p>Build Your Pizza</p>
+      <Form></Form>
     </>
   );
 };
