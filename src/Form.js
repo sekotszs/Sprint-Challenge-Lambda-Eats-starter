@@ -20,8 +20,8 @@ const formSchema = yup.object().shape({
 function Form() {
   const [formState, setFormState] = useState({
     name: "",
-    size: "",
-    sauce: "",
+    size: "Small",
+    sauce: "Orignal Red",
     cheese: true || false,
     meat: true || false,
     veggies: true || false,
@@ -123,7 +123,7 @@ function Form() {
           {errors.name.length > 0 ? (
             <p className="error">{errors.name}</p>
           ) : null}
-        </label>{" "}
+        </label>
         <br />
         <label htmlFor="size">
           Choose your pizza size!
@@ -132,7 +132,7 @@ function Form() {
             <option value="medium">Medium</option>
             <option value="large">Large</option>
           </select>
-        </label>{" "}
+        </label>
         <br />
         <label htmlFor="sauce">
           Choose your pizza sauce!
@@ -142,7 +142,7 @@ function Form() {
             <option value="bbq sauce">BBQ Sauce</option>
             <option value="spinach alfredo">Spinach Alfredo</option>
           </select>
-        </label>{" "}
+        </label>
         <br />
         <label htmlFor="cheese">
           Cheese
@@ -156,7 +156,7 @@ function Form() {
           {errors.cheese.length > 0 ? (
             <p className="error">{errors.cheese}</p>
           ) : null}
-        </label>{" "}
+        </label>
         <br />
         <label htmlFor="meat">
           Meat
@@ -170,7 +170,7 @@ function Form() {
           {errors.meat.length > 0 ? (
             <p className="error">{errors.meat}</p>
           ) : null}
-        </label>{" "}
+        </label>
         <br />
         <label htmlFor="veggies">
           Veggies
@@ -184,7 +184,7 @@ function Form() {
           {errors.veggies.length > 0 ? (
             <p className="error">{errors.veggies}</p>
           ) : null}
-        </label>{" "}
+        </label>
         <br />
         <label htmlFor="other">
           Other
@@ -198,7 +198,7 @@ function Form() {
           {errors.other.length > 0 ? (
             <p className="error">{errors.other}</p>
           ) : null}
-        </label>{" "}
+        </label>
         <br />
         <label htmlFor="instructions">
           Special Instructions
@@ -212,9 +212,9 @@ function Form() {
           {errors.instructions.length > 0 ? (
             <p className="error">{errors.instructions}</p>
           ) : null}
-        </label>{" "}
+        </label>
         <br />
-        <button disabled={buttonDisabled}>Submit</button>
+        <button disabled={buttonDisabled}>Add To Order</button>
       </form>
       {user.map(user => (
         <p>

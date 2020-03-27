@@ -38,8 +38,8 @@ Follow these steps to set up and work on your project:
 - [x] CD into the project base directory `cd lambda-eats`
 - [x] Download project dependencies by running `npm install`
 - [x] Start up the app using `npm start`
-- [ ] Create a new branch: git checkout -b `<firstName-lastName>`. Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
-- [ ] Push commits: git push origin `<firstName-lastName>`.
+- [x] Create a new branch: git checkout -b `<firstName-lastName>`. Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
+- [x] Push commits: git push origin `<firstName-lastName>`.
 
 ### Task 2: Minimum Viable Product
 
@@ -50,9 +50,9 @@ Your MVP should include, at a minimum, the following components.
 - [x] A name text input field
 - [x] Validation for name - name must be at least 2 characters
 - [x]Dropdown form component for pizza size
-- [ ]Checklist form component for toppings - at least 4 (hint: name each separately!)
-- [ ] Text input form component for special instructions
-- [ ] An Add to Order button that submits form and returns a database record of name, pizza size, sauce, and special instructions
+- [x]Checklist form component for toppings - at least 4 (hint: name each separately!)
+- [x] Text input form component for special instructions
+- [x] An Add to Order button that submits form and returns a database record of name, pizza size, sauce, and special instructions
 
 #### Testing MVP
 
